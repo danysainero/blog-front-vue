@@ -7,7 +7,7 @@
         Logout
     </button>
     <div class="links-container">
-    <router-link class="the-header__link" to="/posts">Home</router-link>
+    <router-link class="the-header__link" to="/home/posts">Home</router-link>
     <router-link class="the-header__link" to="/backoffice">Backoffice</router-link>
     </div>
    

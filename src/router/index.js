@@ -1,18 +1,24 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import PostList from '../components/PostList.vue'
 import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
   const routes = [
+    {
+      path: '/',
+      redirect: '/home/posts',
+    },
+    
   {
-    path: '/',
-    name: 'posts',
+    path: '/home',
+    redirect: '/home/posts',
     component: Home,
     children: [
       {
         path: "posts",
-        component: () => import('../components/PostList.vue')
+        component: PostList
       },
       {
         path: "posts/:id",
