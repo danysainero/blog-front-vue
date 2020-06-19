@@ -1,11 +1,13 @@
 <template>
   <div class="the-header">
+    <div class="btn-container">
      <button
       class="the-header__button"
-      v-if="!userIsAuthenticated"
+      v-if="userIsAuthenticated"
       @click="logout">
         Logout
     </button>
+    </div>
     <div class="links-container">
     <router-link class="the-header__link" to="/home/posts">Home</router-link>
     <router-link class="the-header__link" to="/backoffice">Backoffice</router-link>
@@ -30,10 +32,10 @@ export default{
   },
   methods: {
     isAuthenticated() {
-      this.userIsAuthenticated = !!JSON.parse(localStorage.getItem('user'));
+      this.userIsAuthenticated = !!localStorage.getItem('token');
     },
     logout() {
-      localStorage.removeItem('user')
+      localStorage.removeItem('token')
       this.userIsAuthenticated = false
       this.$router.push('/login')
     }
