@@ -3,7 +3,7 @@ import { applyPolyfills, defineCustomElements } from "blog-stenciljs/loader";
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
-import store from "./store";
+import { createStore } from './store';
 
 Vue.config.productionTip = false;
 
@@ -30,6 +30,8 @@ axios.interceptors.request.use(
 applyPolyfills().then(() => {
   defineCustomElements(window);
 });
+
+const store = createStore();
 
 new Vue({
   router,

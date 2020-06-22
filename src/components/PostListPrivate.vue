@@ -103,7 +103,12 @@
       </div>
       <template #footer>
         <div class="modal-btn-container">
-          <Button label="Cancel" @click="dialogNewPost() " icon="pi pi-times" class="p-button-warning" />
+          <Button
+            label="Cancel"
+            @click="dialogNewPost() "
+            icon="pi pi-times"
+            class="p-button-warning"
+          />
           <Button
             label="Save"
             @click="createPost(newPost)"
@@ -121,13 +126,14 @@
 import "primevue/resources/themes/saga-teal/theme.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
-import axios from "axios";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
+import { mapGetters, mapActions } from "vuex";
+
 
 export default {
   name: "AppPostListPrivate",
@@ -137,10 +143,10 @@ export default {
       post: null,
       dialogVisible: false,
       dialogNewPostVisible: false,
-      posts: [],
       newPost: {}
     };
   },
+  computed: { ...mapGetters(["posts"])},
   components: {
     Button,
     InputText,
@@ -149,12 +155,12 @@ export default {
     Column,
     Textarea
   },
-  mounted() {
-    axios.get("http://localhost:3001/api/blog/posts").then(res => {
-      this.posts = res.data;
-    });
+  beforeMount() {
+    this.GET_ALL_POSTS();
   },
   methods: {
+    ...mapActions(["GET_ALL_POSTS", "ADD_POST", "DELETE_POST", "UPDATE_POST"]),
+  
     dialogNewPost() {
       this.dialogNewPostVisible = !this.dialogNewPostVisible;
     },
@@ -163,15 +169,15 @@ export default {
       this.dialogVisible = true;
     },
     createPost(post) {
-      axios.post(`http://localhost:3001/api/blog/posts/`, post);
+      this.ADD_POST(post);
       this.dialogNewPostVisible = false;
     },
     deletePost(postId) {
-      axios.delete(`http://localhost:3001/api/blog/posts/${postId}`);
+      this.DELETE_POST(postId);
       this.dialogVisible = false;
     },
     updatePost(post) {
-      axios.put(`http://localhost:3001/api/blog/posts/${post._id}`, post);
+       this.UPDATE_POST(post);
       this.dialogVisible = false;
     },
     navigateToPostDetail(postId) {
@@ -182,7 +188,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .table-container {
   margin: 20px;
 }
