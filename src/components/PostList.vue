@@ -29,11 +29,11 @@ export default {
   computed: {
     ...mapGetters(["posts"])
   },
-  beforeMount() {
-    this.GET_ALL_POSTS();
-  },
   methods: {
     ...mapActions(["GET_ALL_POSTS"])
+  },
+  beforeMount() {
+    this.GET_ALL_POSTS();
   }
 };
 </script>

@@ -18,37 +18,26 @@
 </template>
 
 <script>
+// eslint-disable-next-line no-unused-vars
 import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "AppLogin",
   data() {
     return {
-      username: "",
-      password: "",
-      token: ""
+      username: '',
+      password: ''
     };
   },
+  computed: { ...mapGetters(["users"]) },
   methods: {
+    ...mapActions(["ADD_USER"]),
+
     handleLogin() {
       if (this.username && this.password) {
-        const auth = btoa(`${this.username}:${this.password}`);
-
-        let config = {
-          headers: {
-            headers: { "Content-Type": "application/json" },
-            Authorization: "Basic " + auth
-          }
-        };
-
-        axios.post(`http://localhost:3001/api/login`, '', config).then(res => {
-          this.token = res.data;
-          localStorage.setItem("token", this.token.token);
-            this.$router.push("/backoffice");
-        });
-
-       
-         
+        const user = { username: this.username, password: this.password };
+        this.ADD_USER(user);
       }
     }
   }

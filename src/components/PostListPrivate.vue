@@ -134,7 +134,6 @@ import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
 import { mapGetters, mapActions } from "vuex";
 
-
 export default {
   name: "AppPostListPrivate",
   data() {
@@ -159,6 +158,7 @@ export default {
     this.GET_ALL_POSTS();
   },
   methods: {
+    // mapea `this.GET_ALL_POSTS()` a `this.$store.dispatch('GET_ALL_POSTS')`
     ...mapActions(["GET_ALL_POSTS", "ADD_POST", "DELETE_POST", "UPDATE_POST"]),
   
     dialogNewPost() {

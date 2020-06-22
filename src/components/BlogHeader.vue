@@ -1,45 +1,44 @@
 <template>
   <div class="the-header">
     <div class="btn-container">
-     <button
-      class="the-header__button"
-      v-if="userIsAuthenticated"
-      @click="logout">
-        Logout
-    </button>
+      <button class="the-header__button" 
+      @click="logout"
+      v-if="users.length > 0"
+      >Logout</button>
     </div>
     <div class="links-container">
-    <router-link class="the-header__link" to="/home/posts">Home</router-link>
-    <router-link class="the-header__link" to="/backoffice">Backoffice</router-link>
+      <router-link class="the-header__link" to="/home/posts">Home</router-link>
+      <router-link class="the-header__link" to="/backoffice">Backoffice</router-link>
     </div>
-   
   </div>
 </template>
 
 <script>
-export default{
+// eslint-disable-next-line no-unused-vars
+import { mapGetters, mapActions } from "vuex";
+
+export default {
   name: "AppBlogHeader",
   data() {
     return {
-      userIsAuthenticated: false
+      token: localStorage.getItem("token")
+    };
+  },
+  computed: { ...mapGetters(["users"]) },
+  beforeMount() {
+    if (this.token) {
+      this.CHECK_USER();
     }
-  },
-  mounted() {
-    this.isAuthenticated()
-  },
-  updated() {
-    this.isAuthenticated()
   },
   methods: {
-    isAuthenticated() {
-      this.userIsAuthenticated = !!localStorage.getItem('token');
-    },
+    ...mapActions(["CHECK_USER", "REMOVE_USER"]),
     logout() {
-      localStorage.removeItem('token')
-      this.userIsAuthenticated = false
-      this.$router.push('/login')
+      if (this.token) {
+        this.REMOVE_USER();
+        this.$router.push("/login");
+      }
     }
-  },
+  }
 };
 </script>
 
@@ -66,6 +65,7 @@ export default{
   background-color: grey;
   border: 0;
   border-radius: 4px;
+  cursor: pointer;
   padding: 6px 8px;
 }
 .router-link-exact-active {
