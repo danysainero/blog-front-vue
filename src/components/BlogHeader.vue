@@ -5,7 +5,8 @@
       @click="logout"
       v-if="users.length > 0"
       >Logout</button>
-    </div>
+    <p class="the-header__user"  v-if="users.length > 0"> Bienvenido {{users[0].userName}}</p>
+     </div>
     <div class="links-container">
       <router-link class="the-header__link" to="/home/posts">Home</router-link>
       <router-link class="the-header__link" to="/backoffice">Backoffice</router-link>
@@ -60,6 +61,11 @@ export default {
   padding: 5px;
   text-decoration: none;
 }
+
+.btn-container{
+  display: flex;
+  align-items: center;
+}
 .the-header__button {
   appearance: none;
   background-color: grey;
@@ -67,6 +73,13 @@ export default {
   border-radius: 4px;
   cursor: pointer;
   padding: 6px 8px;
+}
+
+.the-header__user{
+  color: #01897B;
+  font-weight: 900;
+  margin-left: 20px;
+  text-transform: uppercase;
 }
 .router-link-exact-active {
   border-bottom: 1px solid #ffffff;

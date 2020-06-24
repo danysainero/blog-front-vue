@@ -40,14 +40,14 @@
             <label for="postTitle">Title</label>
           </div>
           <div class="p-col-8">
-            <InputText id="postTitle" v-model="post.postTitle" autocomplete="off" />
+            <InputText id="postTitle" v-model="post.postTitle" autocomplete="off" :disabled=" (users[0]._id == post.user._id || users[0].role == 0 ) ? false : true"/>
           </div>
 
           <div class="p-col-4">
             <label for="postContent">Post</label>
           </div>
           <div class="p-col-8">
-            <Textarea v-model="post.postContent" :autoResize="true" rows="5" cols="30" />
+            <Textarea v-model="post.postContent" :autoResize="true" rows="5" cols="30" :disabled=" (users[0]._id == post.user._id || users[0].role == 0 ) ? false : true"/>
           </div>
           <div class="p-col-8" :style="{margin: '40px'}">
             <Button
@@ -61,7 +61,7 @@
       </div>
 
       <template #footer>
-        <div class="modal-btn-container">
+        <div class="modal-btn-container" v-if="users[0].role == 0 || users[0]._id == post.user._id ">
           <Button
             label="Delete"
             @click="deletePost(post._id)"
@@ -102,7 +102,7 @@
         </div>
       </div>
       <template #footer>
-        <div class="modal-btn-container">
+        <div class="modal-btn-container" >
           <Button
             label="Cancel"
             @click="dialogNewPost() "
@@ -145,7 +145,7 @@ export default {
       newPost: {}
     };
   },
-  computed: { ...mapGetters(["posts"])},
+  computed: { ...mapGetters(["posts", "users"])},
   components: {
     Button,
     InputText,

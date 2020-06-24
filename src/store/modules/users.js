@@ -1,5 +1,5 @@
 import VueJwtDecode from "vue-jwt-decode";
-import proxyService from "../../_services/proxy/post-proxy.js";
+import usersProxy from "../../_services/proxy/auth-proxy";
 
 const moduleUsers = {
   state: {
@@ -22,9 +22,8 @@ const moduleUsers = {
           commit("REMOVE_USER");
           localStorage.removeItem('token');
       },
-    // eslint-disable-next-line no-unused-vars
     ADD_USER({ commit }, user) {
-      return proxyService.login(user).then(res => {
+      return usersProxy.login(user).then(res => {
         const jwtDecoded = VueJwtDecode.decode(res.token);
         commit("ADD_USER", { user: jwtDecoded.body });
         return new Promise(resolve => {

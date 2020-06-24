@@ -4,29 +4,17 @@ import proxyService from "../../_services/proxy/post-proxy.js";
 
 const modulePosts = { 
     state: {
-        posts: [],
-        post: {}
+        posts: []
       },
       getters: {
         posts: state => {
           return state.posts;
-        },
-        post: state => {
-          return state.post;
         }
       },
       actions: {
         GET_ALL_POSTS({ commit }) {
           return proxyService.getAllPost().then(res => {
             commit("GET_ALL_POSTS", { posts: res.data });
-            return new Promise((resolve) => {
-              resolve(res);
-            });
-          });
-        },
-        GET_POST({ commit }, postId) {
-          return proxyService.getPostById(postId).then(res => {
-            commit("GET_POST", { post: res.data });
             return new Promise((resolve) => {
               resolve(res);
             });
