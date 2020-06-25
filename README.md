@@ -17,7 +17,7 @@ npm install
 npm run serve
 ```
 
-### e2e test woth Cypress
+### e2e test with Cypress
 
 ```
 npm run open or npm run test
