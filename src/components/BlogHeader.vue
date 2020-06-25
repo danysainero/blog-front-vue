@@ -1,43 +1,45 @@
 <template>
   <div class="the-header">
-     <button
-      class="the-header__button"
-      v-if="!userIsAuthenticated"
-      @click="logout">
-        Logout
-    </button>
+    <div class="btn-container">
+      <button class="the-header__button" 
+      @click="logout"
+      v-if="users.length > 0"
+      >Logout</button>
+    <p class="the-header__user"  v-if="users.length > 0"> Bienvenido {{users[0].userName}}</p>
+     </div>
     <div class="links-container">
-    <router-link class="the-header__link" to="/home/posts">Home</router-link>
-    <router-link class="the-header__link" to="/backoffice">Backoffice</router-link>
+      <router-link class="the-header__link" to="/home/posts">Home</router-link>
+      <router-link class="the-header__link" to="/backoffice">Backoffice</router-link>
     </div>
-   
   </div>
 </template>
 
 <script>
-export default{
+// eslint-disable-next-line no-unused-vars
+import { mapGetters, mapActions } from "vuex";
+
+export default {
   name: "AppBlogHeader",
   data() {
     return {
-      userIsAuthenticated: false
+      token: localStorage.getItem("token")
+    };
+  },
+  computed: { ...mapGetters(["users"]) },
+  beforeMount() {
+    if (this.token) {
+      this.CHECK_USER();
     }
-  },
-  mounted() {
-    this.isAuthenticated()
-  },
-  updated() {
-    this.isAuthenticated()
   },
   methods: {
-    isAuthenticated() {
-      this.userIsAuthenticated = !!JSON.parse(localStorage.getItem('user'));
-    },
+    ...mapActions(["CHECK_USER", "REMOVE_USER"]),
     logout() {
-      localStorage.removeItem('user')
-      this.userIsAuthenticated = false
-      this.$router.push('/login')
+      if (this.token) {
+        this.REMOVE_USER();
+        this.$router.push("/login");
+      }
     }
-  },
+  }
 };
 </script>
 
@@ -59,12 +61,25 @@ export default{
   padding: 5px;
   text-decoration: none;
 }
+
+.btn-container{
+  display: flex;
+  align-items: center;
+}
 .the-header__button {
   appearance: none;
   background-color: grey;
   border: 0;
   border-radius: 4px;
+  cursor: pointer;
   padding: 6px 8px;
+}
+
+.the-header__user{
+  color: #01897B;
+  font-weight: 900;
+  margin-left: 20px;
+  text-transform: uppercase;
 }
 .router-link-exact-active {
   border-bottom: 1px solid #ffffff;
