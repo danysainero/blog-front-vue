@@ -1,33 +1,20 @@
 <template>
   <div class="login-container">
     <div class="login">
-      <h1>Login</h1>
-      <form id="app" @submit="login">
-        <div v-if="errors.length">
-          <ul>
-            <li v-for="(error, index) in errors" v-bind:key="index">{{ error }}</li>
-          </ul>
-        </div>
-        <label class="login__label" for="username">Username</label>
-        <input
-          class="login__input"
-          type="text"
-          name="username"
-          id="username"
-          v-model="username"
-          autocomplete="off"
-        />
-        <label class="login__label" for="password">Password</label>
-        <input
-          class="login__input"
-          type="password"
-          name="password"
-          id="password"
-          v-model="password"
-        />
-        <button type="submit" class="login__button">Send</button>
-        <a href="/signup">No tienes cuenta? Regístrate</a>
-      </form>
+      <h1>Sign up</h1>
+      <label class="login__label" for="username">Username</label>
+      <input
+        class="login__input"
+        type="text"
+        name="username"
+        id="username"
+        v-model="username"
+        autocomplete="off"
+      />
+      <label class="login__label" for="password">Password</label>
+      <input class="login__input" type="password" name="password" id="password" v-model="password" />
+      <button class="login__button" @click="login">Send</button>
+    <a href="/login"> Ya tienes cuenta? Accede</a>
     </div>
   </div>
 </template>
@@ -36,36 +23,24 @@
 // eslint-disable-next-line no-unused-vars
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
-import { required } from "vuelidate/lib/validators";
 
 export default {
   name: "AppLogin",
   data() {
     return {
-      errors: [],
-      username: "",
-      password: ""
+      username: '',
+      password: ''
     };
-  },
-  validations: {
-    username: { required },
-    password: { required }
   },
   computed: { ...mapGetters(["users"]) },
   methods: {
     ...mapActions(["ADD_USER"]),
 
-    login(e) {
+    login() {
       if (this.username && this.password) {
         const user = { username: this.username, password: this.password };
         this.ADD_USER(user);
       }
-      this.errors = [];
-
-      if (!this.username) {
-        this.errors.push("El nombre es obligatorio.");
-      }
-      e.preventDefault();
     }
   }
 };
@@ -79,7 +54,7 @@ export default {
   justify-content: center;
 }
 .login {
-  background: rgb(210, 235, 221);
+  background: rgb(221, 221, 221);
   border: 0.5px solid rgb(204, 204, 204);
   border-radius: 8px;
   display: flex;

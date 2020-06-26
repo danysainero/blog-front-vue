@@ -21,19 +21,19 @@
 </template>
 
 <script>
-import axios from "axios";
+
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "appPostList",
-  data() {
-    return {
-      posts: []
-    };
+  computed: {
+    ...mapGetters(["posts"])
   },
-  mounted() {
-    axios.get("http://localhost:3001/api/blog/posts").then(res => {
-      this.posts = res.data;
-    });
+  methods: {
+    ...mapActions(["GET_ALL_POSTS"])
+  },
+  beforeMount() {
+    this.GET_ALL_POSTS();
   }
 };
 </script>
@@ -87,8 +87,6 @@ a {
   height: fit-content;
   -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
   page-break-inside: avoid; /* Firefox */
-
-  
 
   &__info {
     color: rgb(130, 129, 129);

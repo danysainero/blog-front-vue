@@ -9,7 +9,7 @@
       data-key="_id"
     >
       <template #header>
-        <Button label="Add Comment" icon="pi pi-plus" @click="dialogNewComment" />
+        <Button label="Add Comment" icon="pi pi-plus" @click="dialogNewCommentVisible = true" />
         <h1>{{post.postTitle}}</h1>
         <p>{{post.postContent}}</p>
       </template>
@@ -76,13 +76,19 @@
             <label for="commentContent">Comentario</label>
           </div>
           <div class="p-col-8">
-            <Textarea v-model="comment.commentContent" :autoResize="true" rows="5" cols="30" />
+            <Textarea
+              v-model="comment.commentContent"
+              :autoResize="true"
+              rows="5"
+              cols="30"
+              :disabled=" (users[0]._id == comment.user || users[0].role == 0 ) ? false : true"
+            />
           </div>
         </div>
       </div>
 
       <template #footer>
-        <div class="modal-btn-container">
+        <div class="modal-btn-container" v-if="users[0].role == 0 || users[0]._id == comment.user">
           <Button
             label="Delete"
             @click="deleteComment(comment._id)"
@@ -105,26 +111,28 @@
 import "primevue/resources/themes/saga-teal/theme.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
-import axios from "axios";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "AppPostDetailPrivate",
   data() {
     return {
-      post: {},
       selectedComment: null,
       dialogVisible: false,
       dialogNewCommentVisible: false,
       comment: null,
-      newComment: {}
+      newComment: {
+        commentContent: ""
+      }
     };
   },
+  computed: { ...mapGetters(["post", "users"]) },
   components: {
     Button,
     InputText,
@@ -133,34 +141,33 @@ export default {
     Column,
     Textarea
   },
-  mounted() {
-    axios
-      .get(`http://localhost:3001/api/blog/posts/${this.$route.params.id}`)
-      .then(res => {
-        this.post = res.data;
-      });
+  beforeMount() {
+    this.GET_POST(this.$route.params.id);
   },
   methods: {
-    dialogNewComment() {
-      this.dialogNewCommentVisible = true;
-    },
+    ...mapActions([
+      "GET_POST",
+      "ADD_COMMENT",
+      "DELETE_COMMENT",
+      "UPDATE_COMMENT"
+    ]),
     onRowSelect(event) {
       this.comment = { ...event.data };
       this.dialogVisible = true;
     },
-    createComment(postId, comment) {
-      axios.post(`http://localhost:3001/api/blog/comments/${postId}`, comment);
+    createComment(postId) {
+      this.ADD_COMMENT({
+        postId,
+        commentContent: this.newComment.commentContent
+      });
       this.dialogNewCommentVisible = false;
     },
     deleteComment(commentId) {
-      axios.delete(`http://localhost:3001/api/blog/comments/${commentId}`);
+      this.DELETE_COMMENT(commentId);
       this.dialogVisible = false;
     },
     updateComment(comment) {
-      axios.put(
-        `http://localhost:3001/api/blog/comments/${comment._id}`,
-        comment
-      );
+      this.UPDATE_COMMENT(comment);
       this.dialogVisible = false;
     }
   }
@@ -168,7 +175,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .table-container {
   margin: 20px;
 }
@@ -182,5 +188,4 @@ div.p-grid div input,
 textarea {
   margin: 10px 0;
 }
-
 </style>

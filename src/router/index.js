@@ -19,10 +19,6 @@ const routes = [
     redirect: "/home/posts"
   },
   {
-    path: "/login",
-    component: () => import("../components/Login.vue")
-  },
-  {
     path: "/home",
     redirect: "/home/posts",
     component: Home,
@@ -52,6 +48,14 @@ const routes = [
         component: () => import("../components/PostDetailPrivate.vue")
       }
     ]
+  },
+  {
+    path: "/login",
+    component: () => import("../components/Login.vue")
+  },
+  {
+    path: "/signup",
+    component: () => import("../components/SignUp.vue")
   },
   { path: "*", component: () => import("../views/PageNotFound.vue") }
 ];
