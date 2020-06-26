@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "blog-stenciljs": "file:../blog/blog-stenciljs",
+    "blog-stenciljs": "file:../blog-stenciljs",
     "core-js": "^3.6.5",
     "node-sass": "^4.14.1",
     "primeicons": "^4.0.0",
