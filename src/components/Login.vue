@@ -2,32 +2,26 @@
   <div class="login-container">
     <div class="login">
       <h1>Login</h1>
-      <form id="app" @submit="login">
-        <div v-if="errors.length">
-          <ul>
-            <li v-for="(error, index) in errors" v-bind:key="index">{{ error }}</li>
-          </ul>
-        </div>
-        <label class="login__label" for="username">Username</label>
-        <input
-          class="login__input"
-          type="text"
-          name="username"
-          id="username"
-          v-model="username"
-          autocomplete="off"
-        />
-        <label class="login__label" for="password">Password</label>
-        <input
-          class="login__input"
-          type="password"
-          name="password"
-          id="password"
-          v-model="password"
-        />
-        <button type="submit" class="login__button">Send</button>
+      <div v-if="errors.length">
+        <ul>
+          <li v-for="(error, index) in errors" v-bind:key="index">{{ error }}</li>
+        </ul>
+      </div>
+      <label class="login__label" for="username">Username</label>
+      <input
+        class="login__input"
+        type="text"
+        name="username"
+        id="username"
+        v-model="username"
+        autocomplete="off"
+      />
+      <label class="login__label" for="password">Password</label>
+      <input class="login__input" type="password" name="password" id="password" v-model="password" />
+      <div class="btn-container">
+        <button @click.prevent="login" class="login__button">Send</button>
         <a href="/signup">No tienes cuenta? Regístrate</a>
-      </form>
+      </div>
     </div>
   </div>
 </template>
@@ -108,6 +102,11 @@ export default {
 .login__label {
   padding: 10px 20px;
 }
+
+.btn-container {
+  display: flex;
+  flex-direction: column;
+}
 .login__button {
   appearance: none;
   background-color: #030681;
@@ -119,7 +118,7 @@ export default {
   height: 50px;
   margin: 25px 0;
   text-transform: uppercase;
-  width: 50%;
+  width: 100%;
 
   &:hover {
     background-color: #04079cc5;
